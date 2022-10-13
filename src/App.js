@@ -1,6 +1,6 @@
 
 import './App.css';
-import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, TwitterAuthProvider } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider, OAuthProvider, signInWithPopup, signOut, TwitterAuthProvider } from "firebase/auth";
 import app from './firebase/firebase.init';
 import { useState } from 'react';
 
@@ -12,6 +12,7 @@ function App() {
   const googleProvider = new GoogleAuthProvider()
   const githubProvider = new GithubAuthProvider()
   const twitterProvider = new TwitterAuthProvider()
+  const yahooProvider = new OAuthProvider('yahoo.com')
 
   const handleGoogleSignIn = () => {
     signInWithPopup(auth, googleProvider)
@@ -57,6 +58,18 @@ function App() {
       })
   }
 
+  const handleYahooSignIn = () => {
+    signInWithPopup(auth, yahooProvider)
+      .then(result => {
+        const user = result.user;
+        setUser(user)
+        console.log(user);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
 
   return (
     <div className="App">
@@ -67,6 +80,7 @@ function App() {
           <button onClick={handleGoogleSignIn}>Google sign in</button>
           <button onClick={handleGitHubSignIn}>Git Hub</button>
           <button onClick={handleTwitterSignIn}>Twitter</button>
+          <button onClick={handleYahooSignIn}>Yahoo Sign In</button>
         </>
       }
       {user.uid &&
